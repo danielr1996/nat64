@@ -1,0 +1,85 @@
+<html lang="en">
+<head>
+    <title>NAT64 by Daniel Richter</title>
+</head>
+<body>
+<header>
+    <nav>
+        <ul style="display: flex; list-style-type: none; gap: 40px">
+            <li><a href="/">Home</a></li>
+            <li><a href="/tos.html">Terms of Service</a></li>
+            <li><a href="/abuse.html">Abuse Report</a></li>
+            <li><a href="https://www.danielrichter.codes/en/imprint">Imprint</a></li>
+        </ul>
+    </nav>
+</header>
+
+<h1>NAT64 by Daniel Richter</h1>
+<section>
+    NAT64 is an IPv6 transition mechanism that allows IPv6-only hosts to access IPv4-only hosts. To learn more
+    consult <a href="https://datatracker.ietf.org/doc/rfc7269/">RFC7269</a>.
+</section>
+<h2>Getting Started</h2>
+<input onchange="toggle(this)" id="tos-sla" type="checkbox"/><label for="tos-sla">I have read and accept
+    the <a href="/tos.html">Terms of Service</a></label>
+<div id="hide" style="color: white;">
+<h3>NAT64+DNS64 (Beginner)</h3>
+<section>
+    NAT64 is usually combined with DNS64 to make the translation transparent to clients. This will likely cover 99% of
+    your use cases, but please keep in mind that IPv4 literals (e.g. <i>ping 1.1.1.1</i> ) won't work since DNS isn't
+    involved.
+
+    To use the NAT64 gatway simply configure your devices to use the following DNS server:
+    <p>
+        2a01:4f8:1c1b:757c::1
+    </p>
+
+    That's it. To test connectivity run <i>curl ipv4.icanhazip.com</i>, if you get <i>188.245.35.53</i>
+    (or any other public ip that isn't yours) that means your connection was tunneled through the gateway and everything
+    works fine.
+</section>
+<h3>NAT64 only (Advanced)</h3>
+<section>
+    If you have advanced use cases and know what you're doing (PREF64,DHCP108, 464xlat,clat) you can also directly use
+    the NAT64 prefix:
+    <p>2a01:4f8:1c1b:757c:64::/96</p>
+</section>
+</div>
+<script>
+    var hide = document.getElementById("hide")
+    function toggle (e){
+        hide.style.color= e.checked ? "black" : "white"
+    }
+</script>
+<h2>Got any questions?</h2>
+<section>
+    I intentionally kept everything brief because NAT64 isn't just one simple software that you can host,
+    but a bunch of algorithms that all translate between IPv6 and IPv4, differing slightly in how exactly that
+    translation is done.
+
+    Fortunately you don't need to know any of those details to use a gateway, but if you are interested in what's
+    happening behind the scenes check these links:
+    <ul>
+        <li><a href="https://blog.daknob.net/do-you-really-need-ipv4-anymore/">Do you really need IPv4 anymore?</a></li>
+        <li><a href="https://blog.apnic.net/2022/11/21/deploying-ipv6-mostly-access-networks/">Deploying IPv6 mostly
+            access networks</a></li>
+        <li><a href="https://www.ietf.org/archive/id/draft-link-v6ops-6mops-00.html">IPv6-Mostly Networks: Deployment
+            and Operations Considerations</a></li>
+    </ul>
+
+    If you want to selfhost a gateway, you can use the following open source software (I use jool with unbound).
+    <ul>
+        <li><a href="https://github.com/toreanderson/clatd">clatd</a></li>
+        <li><a href="https://github.com/vitlabuda/tundra-nat64">tundra</a></li>
+        <li><a href="https://nicmx.github.io/Jool/en/intro-xlat.html">jool</a></li>
+        <li><a href="https://docs.vyos.io/en/latest/configuration/nat/nat64.html">VyOS NAT64</a></li>
+        <li><a href="https://docs.bwipv6.de/docs/misc/nat64-dns64-mit-openbsd-6.4-pf-und-unbound/">DNS64 with
+            unbound</a></li>
+        <li><a href="https://wiki.ubuntuusers.de/DNS-Server_Bind/DNS64/">DNS64 with bind (german)</a></li>
+    </ul>
+
+    If you have any questions left regarding NAT64 please reach out to me at <a href="mailto:nat64@danielrichter.codes">nat64@danielrichter.codes</a>
+    or <a href="https://github.com/danielr1996/nat64/issues">open an issue on github</a>
+</section>
+</body>
+</html>
